@@ -16,6 +16,7 @@ A symbol that fails collection is written as null and rendered as a dash —
 never fabricated.
 """
 import json
+import os
 import sys
 import tempfile
 import time
