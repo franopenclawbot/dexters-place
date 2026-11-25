@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Brief 000 — Dashboard go-live & desk status</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">DEXTER <span class="dim">· BRIEF 000</span></div>
+  <div class="dim small">2026-11-25 · status memo</div>
+</header>
+
+<main>
+  <section class="grid">
+    <article class="card span4">
+      <h2>What this is</h2>
+      <p>This is the desk dashboard: daily briefs, watchlist snapshots and desk status will publish here once the data pipeline is live. It is deliberately unstyled for now — structure first, polish later.</p>
+
+      <h2>Live today</h2>
+      <ul class="list small">
+        <li>Nginx container <code>dexter-dashboard</code> serving on port <b>8080</b> (LAN/private network)</li>
+        <li>Files are bind-mounted, not baked in — a new brief publishes the moment it is saved to <code>briefs/</code> and added to <code>briefs/index.json</code></li>
+        <li>Brief archive wired to the manifest; no build step anywhere</li>
+      </ul>
+
+      <h2>Pending</h2>
+      <ul class="list small">
+        <li>Market data providers (FRED, SEC EDGAR, quote API) — the first data-backed brief lands after this; figures will be sourced and timestamped, never recalled from memory</li>
+        <li>Operator onboarding: objectives, holdings, risk budget, benchmark</li>
+        <li>Scheduled cadence in America/New_York: 07:00 / 09:15 / 12:00 / 16:30 weekday briefs</li>
+      </ul>
+
+      <h2>Standing rule</h2>
+      <p class="muted small">Nothing publishes unverified. No forecast is stated without assumptions. And no private data — holdings, journals, transactions — ever goes on a public repo or page.</p>
+    </article>
+  </section>
+</main>
+
+<a class="backlink small" href="../index.html">← back to dashboard</a>
+<footer class="dim small">Advisory research only — not investment advice. Dexter CIO desk.</footer>
+</body>
+</html>

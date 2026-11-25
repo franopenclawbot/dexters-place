@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dexter · Investment Desk</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">DEXTER <span class="dim">· INVESTMENT DESK</span></div>
+  <div class="dim small" id="clock"></div>
+</header>
+
+<main>
+  <section class="grid">
+
+    <article class="card span2">
+      <h2>Latest brief</h2>
+      <div id="latest" class="muted">Loading…</div>
+    </article>
+
+    <article class="card">
+      <h2>Market snapshot</h2>
+      <p class="muted small">Data pipeline pending. Real quotes appear with the first data-backed brief — verified sources only, never from memory.</p>
+      <div class="kv">
+        <div><span>Regime</span><b>n/a</b></div>
+        <div><span>VIX</span><b>—</b></div>
+        <div><span>10Y</span><b>—</b></div>
+        <div><span>I:COMP</span><b>—</b></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <h2>Brief archive</h2>
+      <ul id="archive" class="list muted">Loading…</ul>
+    </article>
+
+    <article class="card span2">
+      <h2>Watchlist</h2>
+      <p class="muted small">Empty for now — onboarding pending (objectives, holdings, risk budget, benchmark).</p>
+      <table class="tbl">
+        <thead><tr><th>Ticker</th><th>Price</th><th>Fair value</th><th>Score</th><th>Thesis</th></tr></thead>
+        <tbody class="muted"><tr><td colspan="5">no entries yet</td></tr></tbody>
+      </table>
+    </article>
+
+    <article class="card">
+      <h2>Desk status</h2>
+      <ul class="list small">
+        <li><b class="ok">live</b> · dashboard (this site, :8080)</li>
+        <li><b class="pending">next</b> · market data providers</li>
+        <li><b class="pending">next</b> · holdings + risk onboarding</li>
+        <li><b class="pending">next</b> · scheduled briefs (07:00 / 09:15 / 12:00 / 16:30 ET)</li>
+      </ul>
+    </article>
+
+  </section>
+</main>
+
+<footer class="dim small">Advisory research only — not investment advice. Dexter CIO desk.</footer>
+
+<script>
+const NY = 'America/New_York';
+document.getElementById('clock').textContent =
+  new Intl.DateTimeFormat('en-US', {dateStyle:'full', timeZone:NY}).format(new Date()) + ' · ET';
+
+fetch('briefs/index.json')
+  .then(r => { if (!r.ok) throw new Error('manifest missing'); return r.json(); })
+  .then(d => {
+    const briefs = (d.briefs || []).slice().sort((a,b) => b.date.localeCompare(a.date));
+    if (!briefs.length) throw new Error('no briefs');
+    const latest = briefs[0];
+    const el = document.getElementById('latest');
+    el.classList.remove('muted');
+    el.innerHTML =
+      '<a class="brief-link" href="' + latest.file + '">' + latest.title + '</a>' +
+      '<div class="dim small">' + latest.date + ' · ' + latest.regime + '</div>' +
+      '<p class="small muted">' + latest.summary + '</p>';
+    document.getElementById('archive').innerHTML =
+      briefs.map(x => '<li><a href="' + x.file + '">' + x.date + ' — ' + x.title + '</a></li>').join('');
+    document.getElementById('archive').classList.remove('muted');
+  })
+  .catch(() => {
+    document.getElementById('latest').textContent = 'Brief manifest unavailable.';
+    document.getElementById('archive').innerHTML = '<li>—</li>';
+  });
+</script>
+</body>
+</html>

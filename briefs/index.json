@@ -1,0 +1,14 @@
+{
+  "generated": "2026-11-25",
+  "briefs": [
+    {
+      "id": "000",
+      "date": "2026-11-25",
+      "title": "Dashboard go-live & desk status",
+      "file": "000-dashboard-live.html",
+      "regime": "n/a — infrastructure",
+      "summary": "Dashboard deployed to the LAN on port 8080, bind-mounted so new briefs publish on file save. Data pipeline and operator onboarding pending; first data-backed brief follows.",
+      "tags": ["status"]
+    }
+  ]
+}
