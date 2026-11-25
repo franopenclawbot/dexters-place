@@ -26,6 +26,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Refresh market snapshot
+        run: python3 bin/market_ticker.py || echo "ticker refresh failed; deploying with last committed snapshot"
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

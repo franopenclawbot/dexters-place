@@ -49,6 +49,22 @@ h2{font-size:12px;text-transform:uppercase;letter-spacing:.12em;
 .tbl td{padding:6px 8px;border-bottom:1px dashed var(--line)}
 
 .backlink{display:inline-block;margin:18px 0}
+.ticker{overflow:hidden;border:1px solid var(--line);border-radius:8px;
+  background:#0b0e13;margin-bottom:18px}
+.ticker-track{display:inline-flex;white-space:nowrap;padding:8px 0;
+  animation:tick 60s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.tq{padding:0 16px;border-right:1px solid var(--line);
+  font-size:13px;font-variant-numeric:tabular-nums}
+.tq:last-child{border-right:0}
+.tq b{font-weight:600}
+.tq .px{color:var(--txt)}
+.tq .up{color:var(--ok)}
+.tq .down{color:#f87171}
+.tq .flat{color:var(--dim)}
+.tq.meta{color:var(--dim);opacity:.8}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
 footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--line)}
 
 @media(max-width:800px){

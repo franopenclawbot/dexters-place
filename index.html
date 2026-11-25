@@ -12,6 +12,8 @@
   <div class="dim small" id="clock"></div>
 </header>
 
+<div class="ticker" id="ticker"><div class="ticker-track" id="tickerTrack"><span class="tq meta">loading market data…</span></div></div>
+
 <main>
   <section class="grid">
 
@@ -22,13 +24,14 @@
 
     <article class="card">
       <h2>Market snapshot</h2>
-      <p class="muted small">Data pipeline pending. Real quotes appear with the first data-backed brief — verified sources only, never from memory.</p>
+      <p class="muted small">Quotes refresh server-side every 2 minutes. Yahoo Finance delayed feed — figures are sourced, never from memory.</p>
       <div class="kv">
-        <div><span>Regime</span><b>n/a</b></div>
-        <div><span>VIX</span><b>—</b></div>
-        <div><span>10Y</span><b>—</b></div>
-        <div><span>I:COMP</span><b>—</b></div>
+        <div><span>Session</span><b id="snapState">—</b></div>
+        <div><span>VIX</span><b id="snapVix">—</b></div>
+        <div><span>10Y</span><b id="snap10y">—</b></div>
+        <div><span>S&amp;P 500</span><b id="snapSPX">—</b></div>
       </div>
+      <div class="dim small" id="snapAsOf">data pipeline pending</div>
     </article>
 
     <article class="card">
@@ -62,29 +65,63 @@
 
 <script>
 const NY = 'America/New_York';
-document.getElementById('clock').textContent =
+const el = id => document.getElementById(id);
+el('clock').textContent =
   new Intl.DateTimeFormat('en-US', {dateStyle:'full', timeZone:NY}).format(new Date()) + ' · ET';
 
+function fmt(v) {
+  return v == null ? '—' : v.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+/* ---- briefs archive ---- */
 fetch('briefs/index.json')
   .then(r => { if (!r.ok) throw new Error('manifest missing'); return r.json(); })
   .then(d => {
     const briefs = (d.briefs || []).slice().sort((a,b) => b.date.localeCompare(a.date));
     if (!briefs.length) throw new Error('no briefs');
     const latest = briefs[0];
-    const el = document.getElementById('latest');
-    el.classList.remove('muted');
-    el.innerHTML =
+    el('latest').classList.remove('muted');
+    el('latest').innerHTML =
       '<a class="brief-link" href="' + latest.file + '">' + latest.title + '</a>' +
       '<div class="dim small">' + latest.date + ' · ' + latest.regime + '</div>' +
       '<p class="small muted">' + latest.summary + '</p>';
-    document.getElementById('archive').innerHTML =
+    el('archive').innerHTML =
       briefs.map(x => '<li><a href="' + x.file + '">' + x.date + ' — ' + x.title + '</a></li>').join('');
-    document.getElementById('archive').classList.remove('muted');
+    el('archive').classList.remove('muted');
   })
   .catch(() => {
-    document.getElementById('latest').textContent = 'Brief manifest unavailable.';
-    document.getElementById('archive').innerHTML = '<li>—</li>';
+    el('latest').textContent = 'Brief manifest unavailable.';
+    el('archive').innerHTML = '<li>—</li>';
   });
+
+/* ---- market ticker + snapshot ---- */
+function loadMarket() {
+  fetch('data/market.json?t=' + Date.now())
+    .then(r => { if (!r.ok) throw new Error('market data missing'); return r.json(); })
+    .then(d => {
+      const items = d.quotes.map(q => {
+        const pct = q.pct == null ? '' :
+          '<span class="' + (q.pct > 0.005 ? 'up' : q.pct < -0.005 ? 'down' : 'flat') + '">' +
+          (q.pct > 0 ? '+' : '') + q.pct.toFixed(2) + '%</span>';
+        return '<span class="tq"><b>' + q.label + '</b> <span class="px">' + fmt(q.price) + '</span> ' + pct + '</span>';
+      }).join('');
+      el('tickerTrack').innerHTML =
+        '<span class="tq meta">Source: Yahoo Finance (delayed) · ' + d.as_of_et.slice(0, 16) +
+        ' ET · session: ' + d.market_state.state + '</span>' + items + items;
+      const g = s => d.quotes.find(x => x.sym === s);
+      el('snapState').textContent = d.market_state.state;
+      el('snapVix').textContent = fmt(g('^VIX') && g('^VIX').price);
+      el('snap10y').textContent = (g('^TNX') && g('^TNX').price) + '%';
+      el('snapSPX').textContent = fmt(g('^GSPC') && g('^GSPC').price);
+      el('snapAsOf').textContent = 'updated ' + d.as_of_et + ' · Yahoo Finance (delayed)';
+    })
+    .catch(() => {
+      el('tickerTrack').innerHTML = '<span class="tq meta">market data unavailable — will retry</span>';
+      el('snapAsOf').textContent = 'market data unavailable';
+    });
+}
+loadMarket();
+setInterval(loadMarket, 60000);
 </script>
 </body>
 </html>

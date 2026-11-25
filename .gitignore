@@ -1,3 +1,6 @@
 .DS_Store
 *.swp
 *~
+# runtime data: regenerated at deploy time by bin/market_ticker.py;
+# the LAN copy refreshes every 2 min via the hermes cron job
+data/
