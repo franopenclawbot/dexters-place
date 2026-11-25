@@ -18,12 +18,14 @@ Then open http://<host-ip>:8080
 2. Prepend a new entry to `briefs/index.json` (newest first).
 3. Refresh the page — bind mount means nothing to rebuild.
 
-## GitHub Pages (public mirror, optional)
+## GitHub Pages (live)
 
-    gh auth login          # once, interactive
-    git remote add origin git@github.com:<user>/dexter-desk.git
-    git push -u origin main
-    # then: repo Settings -> Pages -> Deploy from branch -> main / root
+Deploys automatically: every push to main triggers the deploy workflow
+(.github/workflows/jekyll-docker.yml) which publishes via actions/deploy-pages.
+
+Live URL: https://franopenclawbot.github.io/dexters-place/
+
+    git push    # that's it — push and Pages updates
 
 ## Hard rule
 
