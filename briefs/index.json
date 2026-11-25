@@ -2,6 +2,15 @@
   "generated": "2026-11-25",
   "briefs": [
     {
+      "id": "002",
+      "date": "2026-11-25",
+      "title": "Pre-market flash: overnight risk-off extends",
+      "file": "002-premarket-flash-overnight-slide.html",
+      "regime": "overnight risk-off - AI de-risking extends; VIX ~30",
+      "summary": "Futures down hard pre-market (ES -1.72%, NQ -2.67% vs Tuesday close), VIX +16.7% to ~30.8, Asia sold off; AI complex -4 to -6% pre-market. Watching gap severity at the open.",
+      "tags": ["flash", "pre-market", "markets", "tech", "ai"]
+    },
+    {
       "id": "001",
       "date": "2026-11-25",
       "title": "Tech/AI desk brief — Wed 11/25 open",
