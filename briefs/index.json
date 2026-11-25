@@ -2,6 +2,15 @@
   "generated": "2026-11-25",
   "briefs": [
     {
+      "id": "001",
+      "date": "2026-11-25",
+      "title": "Tech/AI desk brief — Wed 11/25 open",
+      "file": "001-tech-ai-brief-wed-1125.html",
+      "regime": "risk-off rotation out of AI hardware into defensives",
+      "summary": "Post-squeeze digestion: Tuesday rotated out of AI hardware/semis into defensives (Dow +0.85% vs Nasdaq -1.48%); futures roughly flat overnight; key question is whether Monday's squeeze resumes.",
+      "tags": ["daily", "markets", "tech", "ai"]
+    },
+    {
       "id": "000",
       "date": "2026-11-25",
       "title": "Dashboard go-live & desk status",
