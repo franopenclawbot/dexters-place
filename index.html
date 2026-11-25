@@ -41,10 +41,10 @@
 
     <article class="card span2">
       <h2>Watchlist</h2>
-      <p class="muted small">Empty for now — onboarding pending (objectives, holdings, risk budget, benchmark).</p>
+      <p class="muted small">Operator-seeded names. Quotes refresh with the live feed; theses, fair values and sizing are pending onboarding — candidates only, not recommendations.</p>
       <table class="tbl">
-        <thead><tr><th>Ticker</th><th>Price</th><th>Fair value</th><th>Score</th><th>Thesis</th></tr></thead>
-        <tbody class="muted"><tr><td colspan="5">no entries yet</td></tr></tbody>
+        <thead><tr><th>Ticker</th><th>Price</th><th>1-Day</th><th>Status</th></tr></thead>
+        <tbody class="muted" id="wlBody"><tr><td colspan="4">loading watchlist…</td></tr></tbody>
       </table>
     </article>
 
@@ -94,7 +94,29 @@ fetch('briefs/index.json')
     el('archive').innerHTML = '<li>—</li>';
   });
 
-/* ---- market ticker + snapshot ---- */
+/* ---- market ticker + snapshot + watchlist ---- */
+let wl = null, lastMarket = null;
+function loadWatchlist() {
+  return fetch('watchlist.json?t=' + Date.now())
+    .then(r => { if (!r.ok) throw new Error('watchlist missing'); return r.json(); })
+    .then(j => { wl = j; renderWatchlist(); })
+    .catch(() => { el('wlBody').innerHTML = '<tr><td colspan="4">watchlist unavailable</td></tr>'; });
+}
+function renderWatchlist() {
+  if (!wl) return;
+  const rows = wl.names.map(n => {
+    const q = lastMarket && lastMarket.quotes.find(x => x.sym === n.sym);
+    const px = q && q.price != null ? fmt(q.price) : '—';
+    const pct = !q || q.pct == null ? '<span class="flat">—</span>' :
+      '<span class="' + (q.pct > 0.005 ? 'up' : q.pct < -0.005 ? 'down' : 'flat') + '">' +
+      (q.pct > 0 ? '+' : '') + q.pct.toFixed(2) + '%</span>';
+    return '<tr><td><b>' + n.sym + '</b> <span class="dim small">' + n.label + '</span></td>' +
+      '<td>' + px + '</td><td>' + pct + '</td>' +
+      '<td class="dim small">watching — thesis pending</td></tr>';
+  }).join('');
+  el('wlBody').innerHTML = rows;
+  el('wlBody').classList.remove('muted');
+}
 function loadMarket() {
   fetch('data/market.json?t=' + Date.now())
     .then(r => { if (!r.ok) throw new Error('market data missing'); return r.json(); })
@@ -114,6 +136,8 @@ function loadMarket() {
       el('snap10y').textContent = (g('^TNX') && g('^TNX').price) + '%';
       el('snapSPX').textContent = fmt(g('^GSPC') && g('^GSPC').price);
       el('snapAsOf').textContent = 'updated ' + d.as_of_et + ' · Yahoo Finance (delayed)';
+      lastMarket = d;
+      renderWatchlist();
     })
     .catch(() => {
       el('tickerTrack').innerHTML = '<span class="tq meta">market data unavailable — will retry</span>';
@@ -121,6 +145,7 @@ function loadMarket() {
     });
 }
 loadMarket();
+loadWatchlist();
 setInterval(loadMarket, 60000);
 </script>
 </body>

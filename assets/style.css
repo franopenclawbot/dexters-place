@@ -63,7 +63,9 @@ h2{font-size:12px;text-transform:uppercase;letter-spacing:.12em;
 .tq .down{color:#f87171}
 .tq .flat{color:var(--dim)}
 .tq.meta{color:var(--dim);opacity:.8}
-@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes tick{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+/* left-to-right scroll: track starts at -50% (one content-width, seamless
+   because the item set is duplicated) and moves toward 0 */
 
 footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--line)}
 

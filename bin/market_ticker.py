@@ -77,6 +77,8 @@ UNIVERSE = [
     ("ORCL",    "Oracle",       "equity"),
     ("MU",      "Micron",       "equity"),
     ("TSM",     "TSMC ADR",     "equity"),
+    ("INTC",    "Intel",        "equity"),
+    ("000660.KS","SK Hynix ₩",  "equity"),
     ("PLTR",    "Palantir",     "equity"),
     ("CRWV",    "CoreWeave",    "equity"),
 ]

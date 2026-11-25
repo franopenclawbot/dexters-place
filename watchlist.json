@@ -1,0 +1,16 @@
+{
+  "updated": "2026-11-25",
+  "note": "Seed names from the operator. Theses, fair values, entry ranges and sizing are pending onboarding — quotes below are observations only, not recommendations.",
+  "names": [
+    { "sym": "NVDA",      "label": "NVIDIA" },
+    { "sym": "AMD",       "label": "AMD" },
+    { "sym": "INTC",      "label": "Intel" },
+    { "sym": "ARM",       "label": "Arm Holdings" },
+    { "sym": "000660.KS", "label": "SK Hynix (KRX, KRW)" },
+    { "sym": "MU",        "label": "Micron" },
+    { "sym": "TSM",       "label": "TSMC ADR" },
+    { "sym": "MSFT",      "label": "Microsoft" },
+    { "sym": "GOOGL",     "label": "Alphabet" },
+    { "sym": "AAPL",      "label": "Apple" }
+  ]
+}
