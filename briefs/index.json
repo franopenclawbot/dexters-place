@@ -1,6 +1,15 @@
 {
-  "generated": "2026-11-25",
+  "generated": "2026-11-27",
   "briefs": [
+    {
+      "id": "003",
+      "date": "2026-11-27",
+      "title": "Pre-market: futures rebound into the Black Friday open",
+      "file": "003-premarket-rebound-fri-1127.html",
+      "regime": "futures-led rebound after AI de-risking; VIX easing to ~25",
+      "summary": "NQ +1.7% / ES +1.5% vs prior close (incl. basis) after Wednesday's semis-led selloff; VIX -5.1% to 25.4; ORCL/MU/NVDA led Wednesday losses with heavy 5-session damage in AI hardware (AMD -23%); Chinese chip stocks notched biggest-ever one-day gains on Beijing support.",
+      "tags": ["daily", "pre-market", "markets", "tech", "ai", "black-friday"]
+    },
     {
       "id": "002",
       "date": "2026-11-25",
